@@ -7,12 +7,7 @@
 
 import UIKit
 
-protocol TextChangeDelegate {
-    func didTextChange(changedText: String)
-}
-
 class ViewController2: UIViewController {
-    var delegate: TextChangeDelegate?
 
     @IBOutlet weak var textField: UITextField!
     override func viewDidLoad() {
@@ -24,7 +19,7 @@ class ViewController2: UIViewController {
 
     @IBAction func goBackPressed(_ sender: UIButton) {
         print(textField.text!)
-        delegate?.didTextChange(changedText: textField.text!)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: changedTextKey), object: textField.text!)
         dismiss(animated: true, completion: nil)
     }
     /*

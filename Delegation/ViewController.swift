@@ -7,7 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController, TextChangeDelegate{
+let changedTextKey = "ChangedText"
+
+class ViewController: UIViewController{
     
 
 //    var secondController = ViewController2()
@@ -19,8 +21,16 @@ class ViewController: UIViewController, TextChangeDelegate{
         labelText.text = "Change It!"
         labelText.sizeToFit()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLabel), name: Notification.Name(rawValue: changedTextKey), object: nil)
     }
 
+    @objc func updateLabel(notification: Notification){
+        print(notification.object!)
+        
+        labelText.text = notification.object as? String
+        labelText.sizeToFit()
+    }
+    
     @IBAction func buttonPressed(_ sender: UIButton) {
         self.performSegue(withIdentifier: "goTo2", sender: self)
     }
@@ -30,13 +40,8 @@ class ViewController: UIViewController, TextChangeDelegate{
         // Pass the selected object to the new view controller.
         if segue.identifier == "goTo2" {
             let secondVC = segue.destination as! ViewController2
-            secondVC.delegate = self
             
         }
-    }
-    func didTextChange(changedText: String) {
-        labelText.text = changedText
-        labelText.sizeToFit()
     }
 }
 
